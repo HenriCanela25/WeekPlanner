@@ -1,0 +1,61 @@
+<svg width="200" height="200" viewBox="0 0 200 200" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>WeekFlow hand-drawn check icon</title>
+  <desc>A sketchy hand-drawn style circle with a checkmark inside, in blue.</desc>
+
+  <!-- Sketchy circle (slightly imperfect path to mimic hand-drawn) -->
+  <path
+    d="M100 20
+       C130 18, 162 32, 175 58
+       C190 86, 188 120, 172 145
+       C155 172, 126 185, 98 183
+       C68 181, 38 165, 25 140
+       C10 112, 14 76, 32 52
+       C50 27, 72 22, 100 20
+       Z"
+    fill="none"
+    stroke="#3b5bdb"
+    stroke-width="7"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-dasharray="4 1"
+  />
+
+  <!-- Second stroke pass for sketchy double-line feel -->
+  <path
+    d="M102 24
+       C128 23, 158 38, 171 63
+       C184 90, 181 124, 165 148
+       C149 173, 122 184, 96 182
+       C70 180, 42 163, 29 138
+       C15 111, 20 78, 38 54
+       C56 29, 76 25, 102 24
+       Z"
+    fill="none"
+    stroke="#3b5bdb"
+    stroke-width="3.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    opacity="0.35"
+  />
+
+  <!-- Hand-drawn checkmark -->
+  <path
+    d="M52 105 C62 118, 72 128, 84 138 C96 148, 100 150, 105 148 C120 130, 140 100, 158 72"
+    fill="none"
+    stroke="#3b5bdb"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Slight wobble on check for hand-drawn feel -->
+  <path
+    d="M54 108 C63 120, 73 130, 85 140 C97 150, 102 152, 107 149"
+    fill="none"
+    stroke="#3b5bdb"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    opacity="0.3"
+  />
+</svg>
