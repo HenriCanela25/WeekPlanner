@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDraggable } from "@dnd-kit/react";
+import { useDraggable, useDroppable } from "@dnd-kit/react";
 import styles from "./AddTask.module.css";
 
 const Task = ({ id, description }) => {
@@ -45,13 +45,16 @@ const AddTask = ({ tasks, setTasks }) => {
         }
     }
 
+    // Create droppable zone ref
+    const {ref} = useDroppable({id: 'pending'})
+
     return (
         <>
             <div className={styles.addTask}>
                 <h2 className={styles.taskTitle}>Add Task</h2>
-                <input onKeyDown={addTask} className={styles.inputTask} type="text" name="task" placeholder="Add a task" value={taskInput} onChange={handleInput} />
+                <input onKeyDown={addTask} className={styles.inputTask} type="text" name="task" placeholder="Add a task" value={taskInput} onChange={handleInput} maxLength={255} />
             </div>
-            <div className={styles.pendingTasks}>
+            <div ref={ref} className={styles.pendingTasks}>
                 <ul className={styles.listTasks}>
                     {
                         tasks.map((e) => (

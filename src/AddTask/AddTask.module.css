@@ -15,11 +15,14 @@
 
 .pendingTasks{
     padding: 20px 20px 20px 20px;
+    width: 90%;
+    height: 200px;
 }
 
 .listTasks{
     list-style: none;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 250px);
     gap: 20px;
 }
 
@@ -30,4 +33,7 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
