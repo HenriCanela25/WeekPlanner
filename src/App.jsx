@@ -18,6 +18,14 @@ function App() {
         Sunday: []
     });
 
+    const findTaskInPlannedTasks = (taskId) => {
+        for (const day of Object.keys(plannedTasks)) {
+            const task = plannedTasks[day].find(t => t.id === taskId);
+            if (task) return task;
+        }
+        return null;
+    }
+
     const handleDragEnd = (event) => {
         if (event.canceled) return;
 
@@ -28,14 +36,48 @@ function App() {
         const targetDay = target.id;
 
         const task = tasks.find(t => t.id === taskId);
-        if (!task) return;
 
-        setTasks(prev => prev.filter(t => t.id !== taskId));
+        // Move task
+        if (task && targetDay !== 'pending') { // Case 1: When task is in pending section
+            setTasks(prev => prev.filter(t => t.id !== taskId));
+            
+            setPlannedTasks(prev => ({
+                ...prev,
+                [targetDay]: [...prev[targetDay], task]
+            }));
 
-        setPlannedTasks(prev => ({
-            ...prev,
-            [targetDay]: [...prev[targetDay], task]
-        }));
+        } else if (targetDay === 'pending' && task) { // Case 2: When task is in pending section and the user drop it in the same
+
+            return;
+
+        } else if (targetDay === 'pending' && !task) { // Case 3: When task is in a day and the user drop it in pending section
+
+            Object.keys(plannedTasks).map((day) => (
+
+                setPlannedTasks(prev => ({
+                    ...prev,
+                    [day]: plannedTasks[day].filter(task => task.id !== taskId)
+                }))
+            ))
+            
+            setTasks([...tasks, findTaskInPlannedTasks(taskId)]);
+
+        } else { // Case 4: When task is in a day and the user drop it in another day
+
+            Object.keys(plannedTasks).map((day) => (
+
+                setPlannedTasks(prev => ({
+                    ...prev,
+                    [day]: plannedTasks[day].filter(task => task.id !== taskId)
+                }))
+            ))
+
+            setPlannedTasks(prev => ({
+                ...prev,
+                [targetDay]: [...prev[targetDay], findTaskInPlannedTasks(taskId)]
+            }));     
+            
+        }
     }
 
     return (

@@ -1,5 +1,14 @@
-import { useDroppable } from '@dnd-kit/react';
+import { useDraggable, useDroppable } from '@dnd-kit/react';
 import styles from './PlannedTasks.module.css';
+
+const Draggable = ({ task }) => {
+
+    const {ref} = useDraggable({id: task.id});
+
+    return (
+        <li ref={ref} className={styles.task}>{task.description}</li>
+    );
+}
 
 const DroppableZone = ({ id, tasks }) => {
 
@@ -10,7 +19,7 @@ const DroppableZone = ({ id, tasks }) => {
             <ul className={styles.taskList}>
             {
                 tasks.map(task => (
-                    <li key={task.id}>{task.description}</li>
+                    <Draggable key={task.id} task={task} />
                 ))
             }
             </ul>
@@ -22,7 +31,7 @@ const DroppableZone = ({ id, tasks }) => {
 function PlannedTasks({ plannedTasks }) {
 
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
+    
     return (
         <div className={styles.plannedTasks}>
             {
