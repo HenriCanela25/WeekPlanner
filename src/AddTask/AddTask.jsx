@@ -2,13 +2,18 @@ import { useState } from "react";
 import { useDraggable, useDroppable } from "@dnd-kit/react";
 import styles from "./AddTask.module.css";
 
-const Task = ({ id, description }) => {
+const Task = ({ task, deleteTask }) => {
 
-    const {ref} = useDraggable({id});
+    const {ref} = useDraggable({id: task.id});
 
     return (
         <li ref={ref} className={styles.task}>
-            {description}
+            <span>{task.description}</span>
+            <button className={styles.deleteBtn} onClick={() => deleteTask(task.id)}>
+                <svg className="hi-trash" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path color="rgb(230, 68, 68)" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h3M7 7H5m2 0 .463 12.038a1 1 0 0 0 1 .962h7.075a1 1 0 0 0 .999-.962L17 7m0 0h2m-2 0h-3m-4 0V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2m-4 0h4"/>
+                </svg>  
+            </button>       
         </li>
     )
 }
@@ -45,6 +50,14 @@ const AddTask = ({ tasks, setTasks }) => {
         }
     }
 
+    // Delete function
+    const deleteTask = (taskId) => {
+
+        const dropSound = new Audio('../public/sounds/drop-sound.mp3');
+        setTasks(prev => prev.filter(t => t.id !== taskId));
+        dropSound.play();
+    }    
+
     // Create droppable zone ref
     const {ref} = useDroppable({id: 'pending'})
 
@@ -58,7 +71,7 @@ const AddTask = ({ tasks, setTasks }) => {
                 <ul className={styles.listTasks}>
                     {
                         tasks.map((e) => (
-                            <Task key={e.id} id={e.id} description={e.description} />
+                            <Task key={e.id} task={e} deleteTask={deleteTask} />
                         ))
                     }
                 </ul>

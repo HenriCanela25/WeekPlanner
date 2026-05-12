@@ -84,7 +84,7 @@ function App() {
         <>
             <Header />
             <DragDropProvider onDragEnd={handleDragEnd}>
-                <PlannedTasks plannedTasks={plannedTasks} />
+                <PlannedTasks plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} />
                 <AddTask tasks={tasks} setTasks={setTasks} />
             </DragDropProvider>
         </>

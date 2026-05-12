@@ -48,8 +48,25 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;    
 }
 
 .task:hover{
     background-color: #3a3b3c;
+}
+
+/* Delete functionality */
+
+.deleteBtn{
+    border: 0px;
+    background-color: transparent;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+
+.task:hover .deleteBtn{
+    opacity: 1;
 }

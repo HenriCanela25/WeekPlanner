@@ -36,4 +36,21 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Delete functionality */
+
+.deleteBtn{
+    border: 0px;
+    background-color: transparent;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+
+.task:hover .deleteBtn{
+    opacity: 1;
 }
