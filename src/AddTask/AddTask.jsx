@@ -12,7 +12,7 @@ const Task = ({ task, deleteTask }) => {
             <button className={styles.deleteBtn} onClick={() => deleteTask(task.id)}>
                 <svg className="hi-trash" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path color="rgb(230, 68, 68)" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h3M7 7H5m2 0 .463 12.038a1 1 0 0 0 1 .962h7.075a1 1 0 0 0 .999-.962L17 7m0 0h2m-2 0h-3m-4 0V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2m-4 0h4"/>
-                </svg>  
+                </svg>
             </button>       
         </li>
     )
@@ -40,7 +40,8 @@ const AddTask = ({ tasks, setTasks }) => {
                     ...tasks,
                     {
                         id: count,
-                        description: task
+                        description: task,
+                        isDone: false
                     }
                 ])
                 setCount(count + 1);

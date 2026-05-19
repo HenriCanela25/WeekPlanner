@@ -16,12 +16,12 @@
 }
 
 .taskContainer::-webkit-scrollbar {
-  width: 4px;
+    width: 4px;
 }
 
 .taskContainer::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
+    background: #888;
+    border-radius: 4px;
 }
 
 .taskDiv{
@@ -42,15 +42,11 @@
     color: #eeeeee;
     margin: 10px 10px 10px 10px;
     border-radius: 4px;
-    cursor: pointer;
+    cursor: default;
     font-size: 14px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
     display: flex;
     align-items: center;
-    justify-content: space-between;    
+    justify-content: space-between;
 }
 
 .task:hover{
@@ -68,5 +64,53 @@
 }
 
 .task:hover .deleteBtn{
+    opacity: 1;
+}
+
+/* Complete task functionality */
+
+.circle {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #888;
+    border-radius: 50%;
+    cursor: default;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkIcon {
+    opacity: 0;
+}
+
+.circle:hover .checkIcon{
+    opacity: 1;
+}
+
+.left_part_task{
+    display: flex;
+    gap: 6px;
+}
+
+.left_part_task span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;    
+}
+
+.taskDone {
+    text-decoration: line-through;
+}
+
+.circleDone {
+    color: #888;
+    background-color: #fff;
+    border: 2px solid #fff;
+}
+
+.circleDone .checkIcon{
     opacity: 1;
 }

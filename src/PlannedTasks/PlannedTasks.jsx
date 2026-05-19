@@ -1,13 +1,30 @@
 import { useDraggable, useDroppable } from '@dnd-kit/react';
 import styles from './PlannedTasks.module.css';
 
-const Draggable = ({ task, deleteTask }) => {
+const Draggable = ({ task, deleteTask, completeTask }) => {
 
     const {ref} = useDraggable({id: task.id});
 
     return (
         <li ref={ref} className={styles.task}>
-            <span>{task.description}</span>
+            <div className={styles.left_part_task}>
+                <div className={`${styles.circle} ${task.isDone ? styles.circleDone : ''}`} onClick={() => completeTask(task.id)}>
+                    <svg
+                        className={styles.checkIcon}
+                        width="10"
+                        height="10"
+                        viewBox="0 0 10 10"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <polyline points="1.5,5 4,7.5 8.5,2.5" />
+                    </svg>                    
+                </div>
+                <span className={task.isDone ? styles.taskDone : ''}>{task.description}</span>
+            </div>
             <button className={styles.deleteBtn} onClick={() => deleteTask(task.id)}>
                 <svg className="hi-trash" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path color="rgb(230, 68, 68)" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h3M7 7H5m2 0 .463 12.038a1 1 0 0 0 1 .962h7.075a1 1 0 0 0 .999-.962L17 7m0 0h2m-2 0h-3m-4 0V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2m-4 0h4"/>
@@ -17,7 +34,7 @@ const Draggable = ({ task, deleteTask }) => {
     );
 }
 
-const DroppableZone = ({ id, tasks, deleteTask }) => {
+const DroppableZone = ({ id, tasks, deleteTask, completeTask }) => {
 
     const {ref} = useDroppable({id});
 
@@ -26,7 +43,7 @@ const DroppableZone = ({ id, tasks, deleteTask }) => {
             <ul className={styles.taskList}>
             {
                 tasks.map(task => (
-                    <Draggable key={task.id} task={task} deleteTask={deleteTask} />
+                    <Draggable key={task.id} task={task} deleteTask={deleteTask} completeTask={completeTask} />
                 ))
             }
             </ul>
@@ -39,7 +56,7 @@ function PlannedTasks({ plannedTasks, setPlannedTasks }) {
 
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-    // Delete function
+    // Delete task function
     const deleteTask = (taskId) => {
 
         const dropSound = new Audio('../public/sounds/drop-sound.mp3');
@@ -51,7 +68,21 @@ function PlannedTasks({ plannedTasks, setPlannedTasks }) {
             }))
         ))
         dropSound.play();
-    }    
+    };
+
+    // Complete task function
+    const completeTask = (taskId) => {
+        
+        setPlannedTasks(prev => {
+            const updated = {};
+
+            Object.keys(prev).forEach(day => {
+                updated[day] = prev[day].map(task => task.id === taskId ? {...task, isDone: !task.isDone} : task);
+            });
+
+            return updated;
+        });
+    };
     
     return (
         <div className={styles.plannedTasks}>
@@ -59,7 +90,7 @@ function PlannedTasks({ plannedTasks, setPlannedTasks }) {
                 days.map(day => (
                     <div key={day} id={day} className={styles.taskDiv}>
                         <h2>{day}</h2>
-                        <DroppableZone id={day} tasks={plannedTasks[day]} deleteTask={deleteTask} />
+                        <DroppableZone id={day} tasks={plannedTasks[day]} deleteTask={deleteTask} completeTask={completeTask} />
                     </div>
                 ))
             }     
