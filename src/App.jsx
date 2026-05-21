@@ -2,21 +2,40 @@ import {DragDropProvider} from '@dnd-kit/react';
 import Header from "./Header/Header.jsx";
 import PlannedTasks from "./PlannedTasks/PlannedTasks.jsx";
 import AddTask from "./AddTask/AddTask.jsx";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 function App() {
 
-    const [tasks, setTasks] = useState([]);
-    const [plannedTasks, setPlannedTasks] = useState({
-        Monday: [],
-        Tuesday: [],
-        Wednesday: [],
-        Thursday: [],
-        Friday: [],
-        Saturday: [],
-        Sunday: []
+    const [tasks, setTasks] = useState(() => {
+        const saved = JSON.parse(localStorage.getItem('tasks'));
+
+        return saved ? saved : [];
     });
+
+    const [plannedTasks, setPlannedTasks] = useState(() => {
+        const saved = JSON.parse(localStorage.getItem('plannedTasks'));
+
+        return saved ? saved : {
+            Monday: [],
+            Tuesday: [],
+            Wednesday: [],
+            Thursday: [],
+            Friday: [],
+            Saturday: [],
+            Sunday: []
+        };
+    });
+
+    // Update planned tasks variable everytime it changes
+    useEffect(() => {
+        localStorage.setItem('plannedTasks', JSON.stringify(plannedTasks));
+    }, [plannedTasks]);
+
+    // Update pending tasks variable everytime it changes
+    useEffect(() => {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }, [tasks]);    
 
     const findTaskInPlannedTasks = (taskId) => {
         for (const day of Object.keys(plannedTasks)) {
