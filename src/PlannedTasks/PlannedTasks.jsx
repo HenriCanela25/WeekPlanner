@@ -55,6 +55,7 @@ const DroppableZone = ({ id, tasks, deleteTask, completeTask }) => {
 function PlannedTasks({ plannedTasks, setPlannedTasks }) {
 
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const weekEnds = ['Saturday', 'Sunday'];
 
     // Delete task function
     const deleteTask = (taskId) => {
@@ -87,13 +88,23 @@ function PlannedTasks({ plannedTasks, setPlannedTasks }) {
     return (
         <div className={styles.plannedTasks}>
             {
-                days.map(day => (
+                days.filter(day => !weekEnds.includes(day)).map(day => (
                     <div key={day} id={day} className={styles.taskDiv}>
                         <h2>{day}</h2>
                         <DroppableZone id={day} tasks={plannedTasks[day]} deleteTask={deleteTask} completeTask={completeTask} />
                     </div>
                 ))
-            }     
+            }
+            {
+                <div className={styles.weekendWrapper}>
+                    {weekEnds.map(day => (
+                        <div key={day} id={day} className={styles.weekEndTaskDiv}>
+                            <h2>{day}</h2>
+                            <DroppableZone id={day} tasks={plannedTasks[day]} deleteTask={deleteTask} completeTask={completeTask} />
+                        </div>                    
+                    ))}
+                </div>
+            }
         </div>
     );
 }

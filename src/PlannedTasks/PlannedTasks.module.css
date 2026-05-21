@@ -11,8 +11,15 @@
     border-radius: 3px;
     height: 292px;
     overflow-y: auto;
-    max-height: 292px;
     flex: 1;
+}
+
+.weekendWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    height: 400px;
 }
 
 .taskContainer::-webkit-scrollbar {
@@ -29,6 +36,13 @@
     height: 400px;
     display: flex;
     flex-direction: column;
+}
+
+.weekEndTaskDiv {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
 }
 
 .taskList{
@@ -98,7 +112,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 150px;    
+    max-width: 210px;    
 }
 
 .taskDone {
