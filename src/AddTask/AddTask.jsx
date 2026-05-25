@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDraggable, useDroppable } from "@dnd-kit/react";
 import styles from "./AddTask.module.css";
 
@@ -22,7 +22,17 @@ const Task = ({ task, deleteTask }) => {
 const AddTask = ({ tasks, setTasks }) => {
 
     const [taskInput, setTaskInput] = useState('');
-    const [count, setCount] = useState(1);
+    
+    const [count, setCount] = useState(() => {
+        const saved = localStorage.getItem('count');
+        return saved ? saved : 1;
+    });
+
+    // Save count in local storage when it change
+    useEffect(() => {
+        localStorage.setItem('count', count);
+    }, [count]);
+    
 
     const handleInput = (event) => {
         setTaskInput(event.target.value);
