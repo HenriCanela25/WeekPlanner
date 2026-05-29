@@ -81,6 +81,15 @@
     opacity: 1;
 }
 
+.taskSelected {
+  outline: 2px solid #4a90e2;
+}
+
+.task:hover.taskSelected .deleteBtn {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Complete task functionality */
 
 .circle {

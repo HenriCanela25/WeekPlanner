@@ -1,0 +1,9 @@
+.content {
+    transition: width 0.2s ease-out;
+    width: 100%;
+}
+
+.contentShifted {
+    transition: width 0.2s ease-out;
+    width: calc(100% - 350px);
+}

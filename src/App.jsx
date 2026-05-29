@@ -2,7 +2,9 @@ import {DragDropProvider} from '@dnd-kit/react';
 import Header from "./Header/Header.jsx";
 import PlannedTasks from "./PlannedTasks/PlannedTasks.jsx";
 import AddTask from "./AddTask/AddTask.jsx";
+import TaskPanel from "./PlannedTasks/TaskPanel.jsx";
 import { useEffect, useState } from 'react';
+import styles from './App.module.css';
 
 
 function App() {
@@ -47,6 +49,26 @@ function App() {
             } 
         }
         return null;
+    }
+
+    const [selectedTask, setSelectedTask] = useState(null);
+
+    const updateTask = (taskId, newDescription) => {
+
+        // Update on planned tasks
+        setPlannedTasks(prev => {
+
+            const updated = {};
+
+            Object.keys(prev).forEach(day => {
+                updated[day] = prev[day].map(task => task.id === taskId ? {...task, description: newDescription} : task);
+            })
+
+            return updated;
+        });
+
+        // Update on pending tasks
+        setTasks(prev => prev.map(task => task.id === taskId ? {...task, description: newDescription} : task));
     }
 
     const handleDragEnd = (event) => {
@@ -110,10 +132,15 @@ function App() {
     return (
         <>
             <Header />
-            <DragDropProvider onDragEnd={handleDragEnd}>
-                <PlannedTasks plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} />
-                <AddTask tasks={tasks} setTasks={setTasks} />
-            </DragDropProvider>
+            <div className={selectedTask ? styles.contentShifted : styles.content}>
+                <DragDropProvider onDragEnd={handleDragEnd}>
+                    <PlannedTasks plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
+                    <AddTask tasks={tasks} setTasks={setTasks} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
+                </DragDropProvider>
+            </div>
+            { selectedTask && ( // Side panel for task update
+                <TaskPanel key={selectedTask.id} task={selectedTask} onClose={() => setSelectedTask(null)} onUpdate={updateTask} />
+            )}
         </>
     );
   

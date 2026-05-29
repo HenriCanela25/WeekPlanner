@@ -1,14 +1,18 @@
 import { useDraggable, useDroppable } from '@dnd-kit/react';
 import styles from './PlannedTasks.module.css';
 
-const Draggable = ({ task, deleteTask, completeTask }) => {
+const Draggable = ({ task, deleteTask, completeTask, selectedTask, setSelectedTask }) => {
 
     const {ref} = useDraggable({id: task.id});
+    const isSelected = selectedTask?.id === task.id;
 
     return (
-        <li ref={ref} className={styles.task}>
+        <li ref={ref} className={`${styles.task} ${isSelected ? styles.taskSelected : ''}`} onClick={() => setSelectedTask(task)}>
             <div className={styles.left_part_task}>
-                <div className={`${styles.circle} ${task.isDone ? styles.circleDone : ''}`} onClick={() => completeTask(task.id)}>
+                <div className={`${styles.circle} ${task.isDone ? styles.circleDone : ''}`} onClick={(e) => {
+                        e.stopPropagation();
+                        completeTask(task.id)
+                    }}>
                     <svg
                         className={styles.checkIcon}
                         width="10"
@@ -25,7 +29,13 @@ const Draggable = ({ task, deleteTask, completeTask }) => {
                 </div>
                 <span className={task.isDone ? styles.taskDone : ''}>{task.description}</span>
             </div>
-            <button className={styles.deleteBtn} onClick={() => deleteTask(task.id)}>
+            <button disabled={isSelected} 
+                    className={styles.deleteBtn} 
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        deleteTask(task.id)
+                    }}
+            >
                 <svg className="hi-trash" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path color="rgb(230, 68, 68)" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h3M7 7H5m2 0 .463 12.038a1 1 0 0 0 1 .962h7.075a1 1 0 0 0 .999-.962L17 7m0 0h2m-2 0h-3m-4 0V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2m-4 0h4"/>
                 </svg>  
@@ -34,7 +44,7 @@ const Draggable = ({ task, deleteTask, completeTask }) => {
     );
 }
 
-const DroppableZone = ({ id, tasks, deleteTask, completeTask }) => {
+const DroppableZone = ({ id, tasks, deleteTask, completeTask, selectedTask, setSelectedTask }) => {
 
     const {ref} = useDroppable({id});
 
@@ -43,7 +53,7 @@ const DroppableZone = ({ id, tasks, deleteTask, completeTask }) => {
             <ul className={styles.taskList}>
             {
                 tasks.map(task => (
-                    <Draggable key={task.id} task={task} deleteTask={deleteTask} completeTask={completeTask} />
+                    <Draggable key={task.id} task={task} deleteTask={deleteTask} completeTask={completeTask} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
                 ))
             }
             </ul>
@@ -52,7 +62,7 @@ const DroppableZone = ({ id, tasks, deleteTask, completeTask }) => {
 }
 
 
-function PlannedTasks({ plannedTasks, setPlannedTasks }) {
+function PlannedTasks({ plannedTasks, setPlannedTasks, selectedTask, setSelectedTask }) {
 
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const weekEnds = ['Saturday', 'Sunday'];
@@ -91,7 +101,7 @@ function PlannedTasks({ plannedTasks, setPlannedTasks }) {
                 days.filter(day => !weekEnds.includes(day)).map(day => (
                     <div key={day} id={day} className={styles.taskDiv}>
                         <h2>{day}</h2>
-                        <DroppableZone id={day} tasks={plannedTasks[day]} deleteTask={deleteTask} completeTask={completeTask} />
+                        <DroppableZone id={day} tasks={plannedTasks[day]} deleteTask={deleteTask} completeTask={completeTask} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
                     </div>
                 ))
             }
@@ -100,7 +110,7 @@ function PlannedTasks({ plannedTasks, setPlannedTasks }) {
                     {weekEnds.map(day => (
                         <div key={day} id={day} className={styles.weekEndTaskDiv}>
                             <h2>{day}</h2>
-                            <DroppableZone id={day} tasks={plannedTasks[day]} deleteTask={deleteTask} completeTask={completeTask} />
+                            <DroppableZone id={day} tasks={plannedTasks[day]} deleteTask={deleteTask} completeTask={completeTask} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
                         </div>                    
                     ))}
                 </div>
