@@ -1,13 +1,22 @@
-import { useDraggable, useDroppable } from '@dnd-kit/react';
+import { useDroppable } from '@dnd-kit/react';
+import { useSortable } from '@dnd-kit/react/sortable';
+import { CollisionPriority } from '@dnd-kit/abstract';
 import styles from './PlannedTasks.module.css';
 
-const Draggable = ({ task, deleteTask, completeTask, selectedTask, setSelectedTask }) => {
+const Draggable = ({ task, day, index, deleteTask, completeTask, selectedTask, setSelectedTask }) => {
 
-    const {ref} = useDraggable({id: task.id});
+    const {ref, isDragging} = useSortable({
+        id: task.id,
+        index,
+        type: 'item',
+        accept: 'item',
+        group: day
+    });
+
     const isSelected = selectedTask?.id === task.id;
 
     return (
-        <li ref={ref} className={`${styles.task} ${isSelected ? styles.taskSelected : ''}`} onClick={() => setSelectedTask(task)}>
+        <li ref={ref} data-dragging={isDragging} className={`${styles.task} ${isSelected ? styles.taskSelected : ''}`} onClick={() => setSelectedTask(task)}>
             <div className={styles.left_part_task}>
                 <div className={`${styles.circle} ${task.isDone ? styles.circleDone : ''}`} onClick={(e) => {
                         e.stopPropagation();
@@ -46,14 +55,19 @@ const Draggable = ({ task, deleteTask, completeTask, selectedTask, setSelectedTa
 
 const DroppableZone = ({ id, tasks, deleteTask, completeTask, selectedTask, setSelectedTask }) => {
 
-    const {ref} = useDroppable({id});
+    const {ref} = useDroppable({
+        id,
+        type: 'column',
+        accept: 'item',
+        collisionPriority: CollisionPriority.Low,
+    });
 
     return(
         <div ref={ref} className={styles.taskContainer}>
             <ul className={styles.taskList}>
             {
-                tasks.map(task => (
-                    <Draggable key={task.id} task={task} deleteTask={deleteTask} completeTask={completeTask} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
+                tasks.map((task, index) => (
+                    <Draggable key={task.id} day={id} task={task} index={index} deleteTask={deleteTask} completeTask={completeTask} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
                 ))
             }
             </ul>

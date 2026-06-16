@@ -1,4 +1,5 @@
-import {DragDropProvider} from '@dnd-kit/react';
+import { DragDropProvider } from '@dnd-kit/react';
+import { move } from '@dnd-kit/helpers'
 import Header from "./Header/Header.jsx";
 import PlannedTasks from "./PlannedTasks/PlannedTasks.jsx";
 import AddTask from "./AddTask/AddTask.jsx";
@@ -44,7 +45,6 @@ function App() {
             const task = plannedTasks[day].find(t => t.id === taskId);
             
             if (task) {
-                task.isDone = false; 
                 return task;
             } 
         }
@@ -78,13 +78,23 @@ function App() {
         if (!target) return;
 
         const taskId = source.id;
-        const targetDay = target.id;
+        let targetDay = target.id;
 
         const task = tasks.find(t => t.id === taskId);
 
         // Move task
         if (task && targetDay !== 'pending') { // Case 1: When task is in pending section
             setTasks(prev => prev.filter(t => t.id !== taskId));
+
+            if (!isNaN(targetDay)) {
+                for (const day of Object.keys(plannedTasks)) {
+                    const taskTarget = plannedTasks[day].find(t => t.id === targetDay);
+                    
+                    if (taskTarget) {
+                        targetDay = day;
+                    } 
+                }
+            }
             
             setPlannedTasks(prev => ({
                 ...prev,
@@ -110,7 +120,7 @@ function App() {
                 return updated;
             });
 
-        } else { // Case 4: When task is in a day and the user drop it in another day 
+        } else if (targetDay in(plannedTasks) && !task) { // Case 4: When task is in a day and the user drop it in another day 
             
             setPlannedTasks(prev => {
 
@@ -133,7 +143,12 @@ function App() {
         <>
             <Header />
             <div className={selectedTask ? styles.contentShifted : styles.content}>
-                <DragDropProvider onDragEnd={handleDragEnd}>
+                <DragDropProvider 
+                    onDragEnd={handleDragEnd} 
+                    onDragOver={(event) => {
+                        setPlannedTasks((items) => move(items, event));
+                    }}
+                >
                     <PlannedTasks plannedTasks={plannedTasks} setPlannedTasks={setPlannedTasks} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
                     <AddTask tasks={tasks} setTasks={setTasks} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
                 </DragDropProvider>

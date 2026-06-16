@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDraggable, useDroppable } from "@dnd-kit/react";
+import { CollisionPriority } from '@dnd-kit/abstract'
 import styles from "./AddTask.module.css";
 
 const Task = ({ task, deleteTask, selectedTask, setSelectedTask }) => {
 
-    const {ref} = useDraggable({id: task.id});
+    const {ref} = useDraggable({
+        id: task.id,
+        type: 'item'
+    });
 
     const isSelected = selectedTask?.id === task.id;
 
@@ -75,7 +79,12 @@ const AddTask = ({ tasks, setTasks, selectedTask, setSelectedTask }) => {
     }    
 
     // Create droppable zone ref
-    const {ref} = useDroppable({id: 'pending'})
+    const {ref} = useDroppable({
+        id: 'pending',
+        type: 'column',
+        accept: 'item',
+        collisionPriority: CollisionPriority.Low
+    })
 
     return (
         <>
