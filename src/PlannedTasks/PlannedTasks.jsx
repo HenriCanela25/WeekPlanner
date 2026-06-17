@@ -55,7 +55,7 @@ const Draggable = ({ task, day, index, deleteTask, completeTask, selectedTask, s
 
 const DroppableZone = ({ id, tasks, deleteTask, completeTask, selectedTask, setSelectedTask }) => {
 
-    const {ref} = useDroppable({
+    const {ref, isDropTarget} = useDroppable({
         id,
         type: 'column',
         accept: 'item',
@@ -63,7 +63,7 @@ const DroppableZone = ({ id, tasks, deleteTask, completeTask, selectedTask, setS
     });
 
     return(
-        <div ref={ref} className={styles.taskContainer}>
+        <div ref={ref} className={`${styles.taskContainer} ${isDropTarget ? styles.active : ''}`}>
             <ul className={styles.taskList}>
             {
                 tasks.map((task, index) => (

@@ -7,11 +7,17 @@
 }
 
 .taskContainer{
-    border: 1px solid rgb(206, 206, 206);
+    box-shadow: rgba(0, 0, 0, 0.1) 0 0 0 2px,
+    rgba(0, 0, 0, 0.06) 20px 14px 24px;    
     border-radius: 3px;
     height: 292px;
     overflow-y: auto;
     flex: 1;
+}
+
+.taskContainer.active{
+  background-color: #f7f9fb;
+  box-shadow: #1eb99d 0 0 0 2px, rgba(0, 0, 0, 0.12) 20px 14px 24px;    
 }
 
 .weekendWrapper {
@@ -67,6 +73,11 @@
     background-color: #3a3b3c;
 }
 
+.task[aria-grabbed="true"] {
+    transform: scale(1.025);
+    box-shadow: inset 0px 0px 1px rgba(0,0,0,0.5), -1px 0 15px 0 rgba(34, 33, 81, 0.01), 0px 15px 15px 0 rgba(34, 33, 81, 0.25);    
+}
+
 /* Delete functionality */
 
 .deleteBtn{
@@ -82,12 +93,12 @@
 }
 
 .taskSelected {
-  outline: 2px solid #4a90e2;
+    outline: 2px solid #4a90e2;
 }
 
 .task:hover.taskSelected .deleteBtn {
-  opacity: 0;
-  pointer-events: none;
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* Complete task functionality */

@@ -22,7 +22,7 @@
 .listTasks{
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(auto-fit, 250px);
+    grid-template-columns: repeat(auto-fit, 270px);
     gap: 20px;
 }
 
@@ -38,11 +38,16 @@
     justify-content: space-between;
 }
 
+.task[aria-grabbed="true"]{
+    transform: scale(1.025);
+    box-shadow: inset 0px 0px 1px rgba(0,0,0,0.5), -1px 0 15px 0 rgba(34, 33, 81, 0.01), 0px 15px 15px 0 rgba(34, 33, 81, 0.25);
+}
+
 .task span{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 200px;
+    max-width: 230px;
 }
 
 /* Delete functionality */
@@ -60,10 +65,10 @@
 }
 
 .taskSelected {
-  outline: 2px solid #4a90e2;
+    outline: 2px solid #4a90e2;
 }
 
 .task:hover.taskSelected .deleteBtn {
-  opacity: 0;
-  pointer-events: none;
+    opacity: 0;
+    pointer-events: none;
 }

@@ -109,6 +109,7 @@ function App() {
 
             setPlannedTasks(prev => {
                 const task = findTaskInPlannedTasks(taskId);
+                task.isDone = false;
 
                 const updated = {};
                 Object.keys(prev).forEach(day => {
